@@ -16,10 +16,7 @@ jobs:
                 image: koenleuveld/rmarkdown2pdf:0.2
                 options: -v ${{ github.workspace }}:/report 
                 run: |
-                  echo "test"
                   Rscript -e "rmarkdown::render('/report/myrmd.Rmd', output_file = '/report/myrmd.pdf')"
-                  #touch /report/myrmd.pdf
-                  echo "done"
           - name: Upload artifact
             uses: actions/upload-artifact@v4
             with:
