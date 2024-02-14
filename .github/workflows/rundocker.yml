@@ -13,12 +13,16 @@ jobs:
           - name: Run the build process with Docker
             uses: addnab/docker-run-action@v3
             with:
-                image: koenleuveld/rmarkdown2pdf:0.1
+                image: koenleuveld/rmarkdown2pdf:0.2
                 options: -v ${{ github.workspace }}:/report 
                 run: |
-                  Rscript - e "rmarkdown::render('myrmd.Rmd', output_file = 'myrmd.pdf')"
+                  echo "test"
+                  Rscript -e "rmarkdown::render('/report/myrmd.Rmd', output_file = '/report/myrmd.pdf')"
+                  #touch /report/myrmd.pdf
+                  echo "done"
           - name: Upload artifact
             uses: actions/upload-artifact@v4
             with:
-              path: myrmd.pdf
-                
+              path: ${{ github.workspace }}/myrmd.pdf
+
+##https://aschmelyun.com/blog/using-docker-run-inside-of-github-actions/
