@@ -10,6 +10,23 @@ jobs:
         steps:
           - name: Check out the repo
             uses: actions/checkout@v2
+
+
+          - name: Restore rmarkdown2pdf Image Cache if it exists
+            id: cache-docker-rmarkdown2pdf
+            uses: actions/cache@v3
+            with:
+              path: ci/cache/docker/rmarkdown2pdf
+              key: cache-docker-rmarkdown2pdf-0.2.1
+
+          - name: Update rmarkdown2pdf Image Cache if cache miss
+            if: steps.cache-docker-rmarkdown2pdf.outputs.cache-hit != 'true'
+            run: docker pull koenleuveld/rmarkdown2pdf:0.2.1 && mkdir -p ci/cache/docker/rmarkdown2pdf && docker image save rmarkdown2pdf:0.2.1 --output ./ci/cache/docker/rmarkdown2pdf/rmarkdown2pdf-0.2.1.tar
+
+          - name: Use rmarkdown2pdf Image Cache if cache hit
+            if: steps.cache-docker-rmarkdown2pdf.outputs.cache-hit == 'true'
+            run: docker image load --input ./ci/cache/docker/rmarkdown2pdf/rmarkdown2pdf-0.2.1.tar
+            
           - name: Run the build process with Docker
             run: docker run --rm -v ${{ github.workspace }}:/doc docker.io/koenleuveld/rmarkdown2pdf:0.2.1 myrmd.Rmd
           - name: Upload artifact
