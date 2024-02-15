@@ -26,9 +26,9 @@ jobs:
           - name: Use rmarkdown2pdf Image Cache if cache hit
             if: steps.cache-docker-rmarkdown2pdf.outputs.cache-hit == 'true'
             run: docker image load --input ./ci/cache/docker/rmarkdown2pdf/rmarkdown2pdf-0.2.1.tar
-            
+
           - name: Run the build process with Docker
-            run: docker run --rm -v ${{ github.workspace }}:/doc docker.io/koenleuveld/rmarkdown2pdf:0.2.1 myrmd.Rmd
+            run: docker run --rm -v ${{ github.workspace }}:/doc koenleuveld/rmarkdown2pdf:0.2.1 myrmd.Rmd
           - name: Upload artifact
             uses: actions/upload-artifact@v4
             with:
