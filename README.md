@@ -1,20 +1,55 @@
-This repo contains some work to try out rendering rmarkdown documents using docker:
+# About
 
+This repo contains a docker file to build my rmarkdown2pdf image, that builds a pdf from RMarkdown.
 
-To run the docker locally:
+# Running the docker locally
 
-docker run --rm -v c:\Users\leuve002\git\dockertest:/report rmarkdown2pdf "rmarkdown::render('myrmd.Rmd', output_file = 'myrmd.pdf')"
+Make sure docker is installed, and run: 
 
-
-To build the docker image:
+```
 docker build -t rmarkdown2pdf .
+```
 
+Then, to compile the example PDF:
+
+```
+docker run --rm -v c:\Users\leuve002\git\rmarkdown2pdf:/doc rmarkdown2pdf myrmd.Rmd
+```
+
+# Pushing changes to Docker Hub
 
 To push it to docker hub, follow [instructions](https://docs.docker.com/get-started/04_sharing_app/):
 
+```
 docker tag rmarkdown2pdf koenleuveld/rmarkdown2pdf:0.2
 
 docker push koenleuveld/rmarkdown2pdf:0.2
+```
 
 
-docker run --rm -v c:\Users\leuve002\git\congogbv:/report rmarkdown2pdf "rmarkdown::render('congogbv.Rmd', output_file = 'congogbv.pdf')"
+# Using it in Github Actions
+
+```
+          - name: Run the build process with Docker
+            uses: addnab/docker-run-action@v3
+            with:
+                image: koenleuveld/rmarkdown2pdf:0.2
+                options: -v ${{ github.workspace }}:/doc 
+                run: |
+                  Rscript -e "rmarkdown::render('/doc/myrmd.Rmd', output_file = '/doc/myrmd.pdf')"
+
+```
+
+# Using it in Sublime Text
+
+Add a custom build function like this:
+
+```
+{
+  "cmd": ["C:/Program Files/Docker/Docker/resources/bin/docker.exe","run", "--rm", "-v", "$file_path:/doc", "koenleuveld/rmarkdown2pdf:0.2", "$file_name"],
+  "selector": "text.html.markdown.rmarkdown"
+}
+
+
+
+```
