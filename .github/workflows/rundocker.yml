@@ -11,12 +11,7 @@ jobs:
           - name: Check out the repo
             uses: actions/checkout@v2
           - name: Run the build process with Docker
-            uses: addnab/docker-run-action@v3
-            with:
-                image: koenleuveld/rmarkdown2pdf:0.2
-                options: -v ${{ github.workspace }}:/report 
-                run: |
-                  Rscript -e "rmarkdown::render('/report/myrmd.Rmd', output_file = '/report/myrmd.pdf')"
+            run: docker run --rm -v ${{ github.workspace }}:/doc docker.io/koenleuveld/rmarkdown2pdf:0.2.1 myrmd.Rmd
           - name: Upload artifact
             uses: actions/upload-artifact@v4
             with:

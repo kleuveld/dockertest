@@ -32,12 +32,7 @@ docker push koenleuveld/rmarkdown2pdf:0.2.1
 
 ```
           - name: Run the build process with Docker
-            uses: addnab/docker-run-action@v3
-            with:
-                image: koenleuveld/rmarkdown2pdf:0.2
-                options: -v ${{ github.workspace }}:/doc 
-                run: |
-                  Rscript -e "rmarkdown::render('/doc/myrmd.Rmd', output_file = '/doc/myrmd.pdf')"
+            run: docker run --rm -v ${{ github.workspace }}:/doc docker.io/koenleuveld/rmarkdown2pdf:0.2.1 myrmd.Rmd
 
 ```
 
