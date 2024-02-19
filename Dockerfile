@@ -1,17 +1,32 @@
-FROM rocker/verse:4.3.2
+FROM rocker/r-ver:4.3.2
 
-#required latex packages
-RUN tlmgr update --self
-RUN tlmgr install multirow colortbl float wrapfig euenc fontspec tipa unicode-math xunicode booktabs preprint
+# ensure versions for r packages are always the same
+RUN /rocker_scripts/setup_R.sh https://packagemanager.posit.co/cran/__linux__/jammy/2024-02-14
 
-# Set a user and the working directory
-WORKDIR /doc
+#run pandoc install script
+RUN /rocker_scripts/install_pandoc.sh
 
-RUN install2.r \
+#install R packages
+RUN install2.r  \
   here \
   flextable officer bookdown \
   tidyverse haven \
   list sandwich lmtest DeclareDesign fixest
+
+#install tinytex (https://yihui.org/tinytex/)
+RUN apt update && \
+    apt install -y \
+    perl 
+
+RUN wget -qO- "https://yihui.org/tinytex/install-bin-unix.sh" | sh
+RUN ln -s /root/bin/* /usr/local/bin
+RUN /root/.TinyTeX/bin/*/tlmgr path add
+
+#required latex packages
+RUN tlmgr update --self
+RUN tlmgr install multirow colortbl float wrapfig euenc fontspec tipa unicode-math xunicode booktabs preprint bookmark
+
+WORKDIR /doc
 
 COPY ./rendermarkdown.sh /
 RUN chmod 755 /rendermarkdown.sh
