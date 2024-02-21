@@ -41,9 +41,10 @@ Note that this isn't really great.
 To push it to docker hub, follow [instructions](https://docs.docker.com/get-started/04_sharing_app/):
 
 ```
-docker tag rmarkdown2pdf koenleuveld/rmarkdown2pdf:0.3.0
+docker tag rmarkdown2pdf koenleuveld/rmarkdown2pdf:0.2.3
 docker tag rmarkdown2pdf koenleuveld/rmarkdown2pdf:latest
 docker push rmarkdown2pdf
+
 
 ```
 

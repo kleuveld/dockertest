@@ -11,7 +11,8 @@ RUN install2.r  \
   here \
   flextable officer bookdown \
   tidyverse haven \
-  list sandwich lmtest DeclareDesign fixest
+  list sandwich lmtest DeclareDesign fixest \
+  randomForest
 
 #install tinytex (https://yihui.org/tinytex/)
 RUN apt update && \
@@ -27,7 +28,6 @@ RUN tlmgr update --self
 RUN tlmgr install multirow colortbl float wrapfig euenc fontspec tipa unicode-math xunicode booktabs preprint bookmark
 
 WORKDIR /doc
-
 COPY ./rendermarkdown.sh /
 RUN chmod 755 /rendermarkdown.sh
 
