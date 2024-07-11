@@ -1,7 +1,7 @@
-FROM rocker/r-ver:4.3.2
+FROM rocker/r-ver:4.4.0
 
 # ensure versions for r packages are always the same
-RUN /rocker_scripts/setup_R.sh https://packagemanager.posit.co/cran/__linux__/jammy/2024-02-14
+RUN /rocker_scripts/setup_R.sh https://packagemanager.posit.co/cran/__linux__/jammy/2024-07-11
 
 #run pandoc install script
 RUN /rocker_scripts/install_pandoc.sh
