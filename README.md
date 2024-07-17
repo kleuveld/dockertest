@@ -17,6 +17,18 @@ docker run --rm -v c:\Users\leuve002\git\rmarkdown2pdf:/doc rmarkdown2pdf myrmd.
 
 ```
 
+If the file is named "index.Rmd" (case-sensitive, for now), bookdown will be used
+to render the file: 
+
+```
+
+docker run --rm -v C:\Users\leuve002\git\r_cheatsheet:/doc rmarkdown2pdf index.Rmd
+
+
+```
+
+
+
 Or, to run interactively:
 
 ```
@@ -41,7 +53,7 @@ Note that this isn't really great.
 To push it to docker hub, follow [instructions](https://docs.docker.com/get-started/04_sharing_app/):
 
 ```
-docker tag rmarkdown2pdf koenleuveld/rmarkdown2pdf:0.2.5
+docker tag rmarkdown2pdf koenleuveld/rmarkdown2pdf:0.2.6
 docker tag rmarkdown2pdf koenleuveld/rmarkdown2pdf:latest
 docker push rmarkdown2pdf
 
@@ -59,15 +71,23 @@ docker push rmarkdown2pdf
 
 # Using it in Sublime Text
 
-Add a custom build function like this:
+
+To include it in sublime text, place the following in `AppData\Roaming\Sublime Text\Packages\User\Build Systems\rmarkdown_render_with_docker.sublime-build`:
 
 ```
+
 {
-  "cmd": ["C:/Program Files/Docker/Docker/resources/bin/docker.exe","run", "--rm", "-v", "$file_path:/doc", "koenleuveld/rmarkdown2pdf:latest", "$file_name"],
-  "selector": "text.html.markdown.rmarkdown"
+  "cmd": ["docker","run", "--rm", "-v", "$file_path:/doc", "koenleuveld/rmarkdown2pdf:latest", "$file_name"],
+  "selector": "text.html.markdown.rmarkdown",
+  "path" : "C:/Program Files/Docker/Docker/resources/bin/",
+  "variants": 
+    [
+      {
+        "name": "0.2.3",
+        "cmd": ["docker","run", "--rm", "-v", "$file_path:/doc", "koenleuveld/rmarkdown2pdf:0.2.3", "$file_name"]
+      }
+    ]
 }
-
-
 
 ```
 

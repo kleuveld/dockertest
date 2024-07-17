@@ -9,7 +9,8 @@ RUN /rocker_scripts/install_pandoc.sh
 #install R packages
 RUN install2.r  \
   here \
-  flextable officer bookdown modelsummary GGally \
+  flextable officer bookdown modelsummary \
+  ggpubr GGally \
   tidyverse haven \
   list sandwich lmtest DeclareDesign fixest \
   randomForest
