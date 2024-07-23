@@ -28,6 +28,9 @@ RUN /root/.TinyTeX/bin/*/tlmgr path add
 RUN tlmgr update --self
 RUN tlmgr install multirow colortbl float wrapfig euenc fontspec tipa unicode-math xunicode booktabs preprint bookmark
 
+# for spatial stuff.
+RUN /rocker_scripts/install_geospatial.sh
+
 WORKDIR /doc
 COPY ./rendermarkdown.sh /
 RUN chmod 755 /rendermarkdown.sh
