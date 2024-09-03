@@ -13,7 +13,8 @@ RUN install2.r  \
   ggpubr GGally \
   tidyverse haven \
   list sandwich lmtest DeclareDesign fixest \
-  randomForest
+  randomForest \
+  extrafont
 
 #install tinytex (https://yihui.org/tinytex/)
 RUN apt update && \
@@ -32,7 +33,12 @@ RUN tlmgr install multirow colortbl float wrapfig euenc fontspec tipa unicode-ma
 RUN /rocker_scripts/install_geospatial.sh
 
 WORKDIR /doc
-COPY ./rendermarkdown.sh /
-RUN chmod 755 /rendermarkdown.sh
+COPY ./files/rendermarkdown.sh /
+RUN chmod 755 /rendermarkdown.sh 
+
+
+COPY ./files/ggthemewur_0.1.0.tar.gz /
+RUN Rscript -e "install.packages('/ggthemewur_0.1.0.tar.gz')"
+
 
 ENTRYPOINT [ "/rendermarkdown.sh" ]
