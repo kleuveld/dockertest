@@ -12,7 +12,7 @@ RUN install2.r  \
   flextable officer bookdown modelsummary \
   ggpubr GGally \
   tidyverse haven \
-  list sandwich lmtest DeclareDesign fixest \
+  list sandwich lmtest DeclareDesign fixest MatchIt\
   randomForest \
   extrafont
 
