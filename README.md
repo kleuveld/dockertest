@@ -32,7 +32,7 @@ docker run --rm -v C:\Users\leuve002\git\r_cheatsheet:/doc rmarkdown2pdf index.R
 Or, to run interactively:
 
 ```
-docker run -it -v c:\Users\leuve002\git\rmarkdown2pdf:/doc rmarkdown2pdf 
+docker run -it -v %cd%:/doc koenleuveld/rmarkdown2pdf 
 
 ```
 
@@ -41,11 +41,21 @@ The problem now is that you won't have a graphics device. You will have to save 
 To fix this, on windows, install [Xming](http://www.straightrunning.com/XmingNotes/), and launch the program. Then run:
 
 ```
-docker run -i -t --rm -e DISPLAY=host.docker.internal:0 rmarkdown2pdf
+docker run -i -t --rm -e DISPLAY=host.docker.internal:0 -v %cd%:/doc koenleuveld/rmarkdown2pdf:latest
 
 ```
 
-Note that this isn't really great.
+Note that this isn't really great, the data viewer is barely useable, 
+for example.
+
+If you want to trouble shoot issues, 
+you may want to launch the container in bash, rather than R:
+
+```
+docker run -it --entrypoint /bin/bash -v %cd%:/doc rmarkdown2pdf 
+
+```
+
 
 
 # Pushing changes to Docker Hub
@@ -53,9 +63,11 @@ Note that this isn't really great.
 To push it to docker hub, follow [instructions](https://docs.docker.com/get-started/04_sharing_app/):
 
 ```
-docker tag rmarkdown2pdf koenleuveld/rmarkdown2pdf:0.2.9
+docker tag rmarkdown2pdf koenleuveld/rmarkdown2pdf:0.2.11
 docker tag rmarkdown2pdf koenleuveld/rmarkdown2pdf:latest
-docker push rmarkdown2pdf
+
+docker push koenleuveld/rmarkdown2pdf:latest
+docker tag rmarkdown2pdf koenleuveld/rmarkdown2pdf:0.2.11
 
 
 ```
@@ -91,3 +103,19 @@ To include it in sublime text, place the following in `AppData\Roaming\Sublime T
 
 ```
 
+
+# renv
+
+The container comes with renv.
+
+
+The container uses `/root/.cache/R/renv/cache` as a cache for packages installed
+through renv.
+Make sure to map it to a drive on your local host machine, 
+so you only have to build the packages once.
+
+```
+
+docker run -it -v C:\temp\renv_docker_cache:/root/.cache/R/renv/cache -v %cd%:/doc rmarkdown2pdf 
+
+```

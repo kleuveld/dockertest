@@ -8,6 +8,7 @@ RUN /rocker_scripts/install_pandoc.sh
 
 #install R packages
 RUN install2.r  \
+  renv\
   here \
   flextable officer bookdown modelsummary \
   ggpubr GGally \
